@@ -58,7 +58,7 @@ $(function () {
     function renderReferenceData(data) {
         var items = [
             { label: 'Periods of Day', count: data.periodsCount    || 0, colorClass: 'bg-primary' },
-            { label: 'Work Shifts',    count: data.shiftsCount     || 0, colorClass: 'bg-purple'  },
+            { label: 'Work Shifts',    count: data.shiftsCount || data.shiftCount || 0, colorClass: 'bg-purple'  },
             { label: 'Priorities',     count: data.prioritiesCount || 0, colorClass: 'bg-warning text-dark' },
             { label: 'Frequencies',    count: data.frequenciesCount|| 0, colorClass: 'bg-success' }
         ];

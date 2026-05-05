@@ -222,6 +222,8 @@ body.sidebar-collapse .main-footer {
 .main-header .nav-link { color: var(--rh-muted) !important; }
 .main-header .nav-link:hover { color: var(--rh-text) !important; }
 
+.bg-purple { background-color: var(--rh-purple) !important; color: #fff !important; }
+
 /* ═══════════════════════════════════════════════════════════════
    5. CARDS
    ═══════════════════════════════════════════════════════════════ */
