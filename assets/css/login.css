@@ -1,0 +1,323 @@
+/*
+ * login.css — Résidence Harmonie
+ * Self-contained login page styles.
+ * This file intentionally overrides app.css dashboard layout rules
+ * that would otherwise contaminate the login page.
+ */
+
+/* ── RESET: Override dashboard pollution from app.css ──────────── */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+body {
+  background: #fff !important;
+}
+
+/* Kill any sidebar/wrapper rules leaking in */
+.wrapper,
+.content-wrapper,
+.main-sidebar,
+.main-header,
+.main-footer {
+  display: none !important;
+}
+
+/* ── LAYOUT: 50/50 Split ──────────────────────────────────────── */
+.login-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.login-form-panel {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  background: #fff;
+}
+
+.login-form-content {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-art-panel {
+  width: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── BRANDING ─────────────────────────────────────────────────── */
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.login-brand-icon {
+  width: 52px;
+  height: 52px;
+  background: #f97316;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.2);
+}
+
+.login-brand-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ── HEADING ──────────────────────────────────────────────────── */
+.login-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+}
+
+.login-subtitle {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0 0 48px 0;
+  line-height: 1.6;
+}
+
+/* ── FORM FIELDS ──────────────────────────────────────────────── */
+.login-field {
+  margin-bottom: 28px;
+}
+
+.login-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.login-input-wrap {
+  position: relative;
+}
+
+.login-input {
+  width: 100%;
+  height: 56px;
+  padding: 0 56px 0 20px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+
+.login-input::placeholder {
+  color: #cbd5e1;
+  font-weight: 400;
+}
+
+.login-input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.08);
+}
+
+/* Eye toggle — INSIDE the input */
+.login-eye {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  line-height: 1;
+  z-index: 2;
+  transition: color 0.15s;
+}
+
+.login-eye:hover {
+  color: #64748b;
+}
+
+/* ── OPTIONS ROW ──────────────────────────────────────────────── */
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 36px 0 40px 0;
+}
+
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.login-remember input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #f97316;
+}
+
+.login-remember span {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.login-forgot {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f97316;
+  text-decoration: none;
+}
+
+.login-forgot:hover {
+  text-decoration: underline;
+}
+
+/* ── SUBMIT BUTTON ────────────────────────────────────────────── */
+.login-submit {
+  width: 100%;
+  height: 56px;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.login-submit:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.login-submit:active {
+  transform: translateY(0);
+}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+.login-footer {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.login-footer a {
+  color: #f97316;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.login-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HERO PHOTOGRAPH — Warm, Human, Trustworthy
+   Full-bleed cover image with subtle warm overlay and optional
+   frosted-glass tagline card.
+   ══════════════════════════════════════════════════════════════════ */
+.login-art-panel {
+  background-image: url('../images/login-hero.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Subtle warm overlay for brand cohesion */
+.login-art-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(249, 115, 22, 0.06) 0%,
+    rgba(15, 23, 42, 0.15) 100%
+  );
+  pointer-events: none;
+}
+
+/* Frosted tagline card floating over the photo */
+.login-art-card {
+  position: absolute;
+  bottom: 48px;
+  left: 48px;
+  right: 48px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  z-index: 2;
+}
+
+.login-art-card-quote {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.login-art-card-attr {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .login-art-panel { display: none; }
+  .login-form-panel { width: 100%; padding: 2rem; }
+}
+
+@media (max-width: 480px) {
+  .login-form-panel { padding: 1.5rem; }
+  .login-brand { margin-bottom: 40px; }
+  .login-subtitle { margin-bottom: 32px; }
+}
+
