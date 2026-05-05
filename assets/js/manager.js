@@ -198,13 +198,28 @@ $(function () {
                         size: '75%',
                         labels: {
                             show: true,
+                            name: {
+                                show: true,
+                                fontSize: '13px',
+                                fontWeight: 700,
+                                color: '#334155',
+                                offsetY: -5
+                            },
+                            value: {
+                                show: true,
+                                fontSize: '24px',
+                                fontWeight: 800,
+                                color: '#111827',
+                                offsetY: 10,
+                                formatter: function (val) { return kpi.completionRate + '%'; }
+                            },
                             total: {
-                                show:      true,
-                                label:     'Completion',
-                                formatter: function () { return kpi.completionRate + '%'; },
-                                color:     '#10b981',
-                                fontSize:  '20px',
-                                fontWeight: 800
+                                show: true,
+                                label: 'Completion',
+                                color: '#334155',
+                                fontSize: '13px',
+                                fontWeight: 700,
+                                formatter: function () { return kpi.completionRate + '%'; }
                             }
                         }
                     }

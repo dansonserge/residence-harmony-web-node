@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="assets/css/app.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary employee-page">
 <div class="wrapper">
 
   <!-- ═══════════════════ HEADER ═══════════════════ -->
@@ -32,9 +32,9 @@
         </button>
       </li>
       <li class="nav-item dropdown" id="notification-dropdown">
-        <a class="nav-link dropdown-toggle position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link position-relative d-flex align-items-center" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="padding-right: 0.5rem;">
           <i class="fas fa-bell"></i>
-          <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" style="font-size:0.5rem">5</span>
+          <span id="notification-badge" class="position-absolute badge rounded-pill bg-warning" style="font-size:0.55rem; top: 4px; right: -2px; padding: 0.25em 0.4em;">5</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width:360px;max-height:480px;overflow-y:auto">
           <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
@@ -62,7 +62,7 @@
           <li><a class="dropdown-item fs-13" href="#"><i class="fas fa-user me-2 text-muted"></i>My Profile</a></li>
           <li><a class="dropdown-item fs-13" href="admin.html"><i class="fas fa-cog me-2 text-muted"></i>Settings</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item fs-13" href="index.html"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
+          <li><a class="dropdown-item fs-13 py-2" href="index.html" id="btn-logout"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
         </ul>
       </li>
     </ul>
@@ -83,7 +83,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
           <li class="nav-item"><a href="#" class="nav-link active" data-page="employee"><i class="nav-icon fas fa-users"></i><span class="nav-link-label">My Residents</span></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="employee"><i class="nav-icon fas fa-tasks"></i><span class="nav-link-label">Today's Tasks</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-tasks"></i><span class="nav-link-label">Today's Tasks</span></a></li>
           <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-eye"></i><span class="nav-link-label">Observations</span></a></li>
           <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-history"></i><span class="nav-link-label">History</span></a></li>
           <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-user"></i><span class="nav-link-label">Profile</span></a></li>
@@ -118,16 +118,16 @@
 
         <!-- Resident header (hidden until resident selected) -->
         <div id="task-header" class="d-none">
-          <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
-            <h2 class="fs-14 fw-700 mb-0" id="resident-title" style="color:var(--rh-text)"></h2>
-            <button class="btn btn-sm btn-primary rounded-3 fs-11 flex-shrink-0" type="button">+ Add Task</button>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="fs-18 fw-800 mb-0" id="resident-title" style="color:var(--rh-text)"></h2>
+            <button class="btn btn-primary rounded-pill px-3 py-1 fs-11 fw-700 shadow-sm" type="button">+ Add Task</button>
           </div>
-          <div id="resident-alerts" class="d-flex flex-wrap gap-1"></div>
+          <div id="resident-alerts" class="d-flex flex-wrap gap-2"></div>
         </div>
 
         <!-- Period heading + tabs -->
-        <div id="period-tabs-wrapper" class="d-none px-4 pt-3">
-          <h3 class="fs-13 fw-600 mb-2" id="period-heading" style="color:var(--rh-text)"></h3>
+        <div id="period-tabs-wrapper" class="d-none mt-4">
+          <h3 class="fs-13 fw-700 px-4 mb-3" id="period-heading" style="color:var(--rh-text); text-transform: capitalize;"></h3>
           <nav id="period-tabs-nav" class="nav">
             <!-- 6 tabs built by employee.js -->
           </nav>
@@ -161,6 +161,10 @@
     </div><!-- /employee-layout -->
 
   </div><!-- /content-wrapper -->
+  
+  <footer class="main-footer text-center fs-11 text-muted py-3">
+    <a href="demo.html" class="text-decoration-none text-muted"><strong>Résidence Harmonie</strong> &copy; 2026</a>
+  </footer>
 
 </div><!-- /wrapper -->
 

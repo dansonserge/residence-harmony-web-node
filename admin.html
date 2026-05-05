@@ -32,9 +32,9 @@
         </button>
       </li>
       <li class="nav-item dropdown" id="notification-dropdown">
-        <a class="nav-link dropdown-toggle position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link position-relative d-flex align-items-center" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="padding-right: 0.5rem;">
           <i class="fas fa-bell"></i>
-          <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" style="font-size:0.5rem">5</span>
+          <span id="notification-badge" class="position-absolute badge rounded-pill bg-warning" style="font-size:0.55rem; top: 4px; right: -2px; padding: 0.25em 0.4em;">5</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width:360px;max-height:480px;overflow-y:auto">
           <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
@@ -62,7 +62,7 @@
           <li><a class="dropdown-item fs-13" href="#"><i class="fas fa-user me-2 text-muted"></i>My Profile</a></li>
           <li><a class="dropdown-item fs-13" href="admin.html"><i class="fas fa-cog me-2 text-muted"></i>Settings</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item fs-13" href="index.html"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
+          <li><a class="dropdown-item fs-13 py-2" href="index.html" id="btn-logout"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
         </ul>
       </li>
     </ul>
@@ -236,7 +236,7 @@
   </div><!-- /content-wrapper -->
 
   <footer class="main-footer text-center fs-11 text-muted py-3">
-    <strong>Résidence Harmonie</strong> &copy; 2026
+    <a href="demo.html" class="text-decoration-none text-muted"><strong>Résidence Harmonie</strong> &copy; 2026</a>
   </footer>
 
 </div><!-- /wrapper -->

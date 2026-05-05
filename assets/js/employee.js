@@ -144,28 +144,29 @@ $(function () {
         $.each(residents, function (i, r) {
             var initials = r.name.split(' ').map(function (n) { return n[0]; }).join('').slice(0, 2).toUpperCase();
             var colors   = AVATAR_COLORS[i % AVATAR_COLORS.length];
-            var isDone   = r.doneTasksCount === r.totalTasksCount;
 
             // Avatar: try photoUrl, fall back to initials
             var avatarHtml = '<img class="resident-avatar" src="' + _esc(r.photoUrl) + '" alt="' + _esc(r.name) + '" ' +
                 'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-                '<span class="notif-avatar-initials" style="display:none;background:' + colors.bg + ';color:' + colors.text + '">' + initials + '</span>';
+                '<span class="notif-avatar-initials" style="display:none;background:' + colors.bg + ';color:' + colors.text + ';width:40px;height:40px">' + initials + '</span>';
 
             // Badges
             var badges = '';
-            badges += '<span class="badge me-1 ' + (isDone ? 'badge-done' : 'badge-progress') + '">' +
-                r.doneTasksCount + '/' + r.totalTasksCount + ' done</span>';
-            $.each(r.alerts.allergies || [], function (j, a) {
-                badges += '<span class="badge badge-moyenne me-1">' + _esc(a) + '</span>';
-            });
+            badges += '<span class="badge-rh bg-light-blue me-1">' + r.doneTasksCount + '/' + r.totalTasksCount + ' done</span>';
+            
+            if (r.alerts.allergies && r.alerts.allergies.length > 0) {
+                badges += '<span class="badge-rh bg-light-orange me-1">' + _esc(r.alerts.allergies[0]) + '</span>';
+                if (r.alerts.allergies.length > 1) {
+                    badges += '<span class="badge-rh bg-light-orange me-1">' + _esc(r.alerts.allergies[1]) + '</span>';
+                }
+            }
+            
             if (r.alerts.risk === 'Fall' || r.alerts.risk === 'High') {
-                badges += '<span class="badge badge-refused me-1">' + _esc(r.alerts.risk) + ' Risk</span>';
+                badges += '<span class="badge-rh bg-light-red me-1">Fall Risk</span>';
             }
-            if (r.alerts.texture && r.alerts.texture !== 'Regular') {
-                badges += '<span class="badge badge-na me-1">' + _esc(r.alerts.texture) + '</span>';
-            }
+            
             if (r.alerts.mobility && r.alerts.mobility !== 'Independent') {
-                badges += '<span class="badge badge-na me-1">' + _esc(r.alerts.mobility) + '</span>';
+                badges += '<span class="badge-rh bg-light-gray me-1">' + _esc(r.alerts.mobility) + '</span>';
             }
 
             var $item = $('<button>')
@@ -176,9 +177,11 @@ $(function () {
                 .html(
                     '<span class="position-relative">' + avatarHtml + '</span>' +
                     '<span class="flex-1 text-start" style="min-width:0">' +
-                      '<span class="resident-name d-block">' + _esc(r.name) + '</span>' +
-                      '<span class="resident-room d-block">Room ' + _esc(r.roomNumber) + '</span>' +
-                      '<span class="d-flex flex-wrap gap-1 mt-1">' + badges + '</span>' +
+                      '<div class="d-flex justify-content-between align-items-center mb-1">' +
+                        '<span class="resident-name">' + _esc(r.name) + '</span>' +
+                        '<span class="resident-room" style="font-size:10px">Room ' + _esc(r.roomNumber) + '</span>' +
+                      '</div>' +
+                      '<div class="d-flex flex-wrap gap-1">' + badges + '</div>' +
                     '</span>'
                 );
 
@@ -189,16 +192,17 @@ $(function () {
     // ─── Render: resident header ──────────────────────────────────────────────
 
     function renderResidentHeader(resident) {
-        $('#resident-title').text('👤 ' + resident.name + ' — Room ' + resident.roomNumber);
+        $('#resident-title').html('<i class="fas fa-user-circle me-2 text-muted"></i>' + resident.name + ' — Room ' + resident.roomNumber);
 
         var badges = '';
-        badges += '<span class="badge badge-progress me-1">🍽 Texture: ' + _esc(resident.alerts.texture) + '</span>';
+        badges += '<span class="badge-rh bg-light-blue me-2">🍽 Texture: ' + _esc(resident.alerts.texture) + '</span>';
         $.each(resident.alerts.allergies || [], function (i, a) {
-            badges += '<span class="badge badge-refused me-1">⚠ Allergies: ' + _esc(a) + '</span>';
+            badges += '<span class="badge-rh bg-light-orange me-2">⚠ Allergies: ' + _esc(a) + '</span>';
         });
-        badges += '<span class="badge badge-progress me-1">♿ Mobility: ' + _esc(resident.alerts.mobility) + '</span>';
-        var riskClass = (resident.alerts.risk === 'Fall' || resident.alerts.risk === 'High') ? 'badge-moyenne' : 'badge-na';
-        badges += '<span class="badge ' + riskClass + ' me-1">⚡ Risk: ' + _esc(resident.alerts.risk) + '</span>';
+        badges += '<span class="badge-rh bg-light-blue me-2">♿ Mobility: ' + _esc(resident.alerts.mobility) + '</span>';
+        if (resident.alerts.risk === 'Fall' || resident.alerts.risk === 'High') {
+            badges += '<span class="badge-rh bg-light-orange me-2">⚡ Risk: Fall</span>';
+        }
 
         $('#resident-alerts').html(badges);
     }
@@ -257,24 +261,26 @@ $(function () {
             .attr('data-task-id', task.id);
 
         $card.html(
-            '<div class="d-flex align-items-start justify-content-between gap-3 mb-2">' +
+            '<div class="d-flex align-items-start justify-content-between gap-3 mb-3">' +
               '<div>' +
-                '<p class="fs-13 fw-600 mb-0" style="color:var(--rh-text)">' +
+                '<p class="fs-14 fw-700 mb-1" style="color:var(--rh-text)">' +
                   priorityEmoji + ' ' + _esc(task.name) +
-                  '<span class="fw-400 text-rh-muted ms-1">/ ' + _esc((task.description || '').split(' ')[0]) + '</span>' +
+                  '<span class="fw-500 text-muted ms-2 fs-12">/ ' + _esc((task.description || '').split(' ')[0]) + '</span>' +
                 '</p>' +
-                '<p class="fs-11 text-rh-muted mt-1 mb-0">' +
-                  '📝 ' + _esc(task.description) + ' · Durée: ' + _esc(task.duration) + ' · ' +
-                  '<span class="' + priorityClass + '">● ' + _esc(task.priority) + ' priorité</span>' +
-                '</p>' +
+                '<div class="d-flex align-items-center gap-3 fs-11 text-muted">' +
+                  '<span><i class="far fa-clock me-1"></i> Durée: ' + _esc(task.duration) + '</span>' +
+                  '<span class="' + priorityClass + '"><i class="fas fa-circle me-1" style="font-size:6px"></i> ' + _esc(task.priority) + ' priorité</span>' +
+                '</div>' +
               '</div>' +
               '<div class="flex-shrink-0">' + statusBadge + '</div>' +
             '</div>' +
 
-            '<textarea class="task-observation mb-2" rows="2" ' +
-              'placeholder="Observation: (optionnelle)...">' + _esc(observation) + '</textarea>' +
+            '<div class="observation-box">' +
+               '<textarea class="task-observation" rows="2" ' +
+                 'placeholder="Observation: (optionnelle)...">' + _esc(observation) + '</textarea>' +
+            '</div>' +
 
-            '<div class="d-flex flex-wrap gap-2">' +
+            '<div class="d-flex flex-wrap gap-2 mt-3">' +
               _statusBtn('Done',        'btn-task-status' + (status === 'Done'        ? ' active-done'     : ''), '✓ Done') +
               _statusBtn('In Progress', 'btn-task-status' + (status === 'In Progress' ? ' active-progress' : ''), '▶ ' + (status === 'In Progress' ? 'In Progress' : 'Start')) +
               _statusBtn('Refused',     'btn-task-status' + (status === 'Refused'     ? ' active-refused'  : ''), '✗ Refused') +
