@@ -31,8 +31,32 @@ $(function () {
     // Hamburger toggle button
     $(document).on('click', '#btn-sidebar-toggle', function (e) {
         e.preventDefault();
-        isExpanded = !isExpanded;
-        applySidebarState();
+        
+        if (window.innerWidth < 768) {
+            // Mobile: Toggle overlay
+            $('body').toggleClass('sidebar-open');
+        } else {
+            // Desktop: Toggle collapse
+            isExpanded = !isExpanded;
+            applySidebarState();
+        }
+    });
+
+    // Close mobile sidebar when clicking on the content area or nav links
+    $(document).on('click', function (e) {
+        if (window.innerWidth < 768 && $('body').hasClass('sidebar-open')) {
+            // If click is NOT inside main-sidebar and NOT on the toggle button
+            if (!$(e.target).closest('.main-sidebar').length && !$(e.target).closest('#btn-sidebar-toggle').length) {
+                $('body').removeClass('sidebar-open');
+            }
+        }
+    });
+
+    // Close mobile sidebar after clicking a link
+    $(document).on('click', '.nav-sidebar .nav-link', function () {
+        if (window.innerWidth < 768) {
+            $('body').removeClass('sidebar-open');
+        }
     });
 
     // ── 2. Dark mode ─────────────────────────────────────────────────────────

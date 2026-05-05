@@ -314,10 +314,10 @@ $(function () {
         $.each(rows, function (i, row) {
             $tbody.append(
                 '<tr>' +
-                  '<td class="fs-12 fw-bold">'  + _esc(row.resident) + '</td>' +
-                  '<td class="fs-12 text-muted">' + _esc(row.task)     + '</td>' +
-                  '<td class="fs-12 text-muted">' + _esc(row.period)   + '</td>' +
-                  '<td class="fs-12 fw-bold text-rh-red text-nowrap">🕐 ' + _esc(row.dueTime) + '</td>' +
+                  '<td data-label="Resident" class="fs-12 fw-bold">'  + _esc(row.resident) + '</td>' +
+                  '<td data-label="Task" class="fs-12 text-muted">' + _esc(row.task)     + '</td>' +
+                  '<td data-label="Period" class="fs-12 text-muted">' + _esc(row.period)   + '</td>' +
+                  '<td data-label="Due" class="fs-12 fw-bold text-rh-red text-nowrap">🕐 ' + _esc(row.dueTime) + '</td>' +
                 '</tr>'
             );
         });
@@ -340,9 +340,9 @@ $(function () {
             var rowClass   = isCritical ? 'row-critical' : '';
             $tbody.append(
                 '<tr class="' + rowClass + '">' +
-                  '<td class="fs-12 fw-bold">'  + _esc(row.resident) + '</td>' +
-                  '<td class="fs-12">'           + _esc(row.text)     + '</td>' +
-                  '<td class="fs-12">'           + _esc(row.time)     + '</td>' +
+                  '<td data-label="Resident" class="fs-12 fw-bold">'  + _esc(row.resident) + '</td>' +
+                  '<td data-label="Note" class="fs-12">'           + _esc(row.text)     + '</td>' +
+                  '<td data-label="Time" class="fs-12">'           + _esc(row.time)     + '</td>' +
                 '</tr>'
             );
         });

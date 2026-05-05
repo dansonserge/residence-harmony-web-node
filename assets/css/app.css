@@ -12,9 +12,14 @@
   --rh-sidebar-active:  #e8770d;
   --rh-sidebar-hover:   #243d4a;
   --rh-sidebar-text:    #c8d8e0;
-  --rh-sidebar-width:   220px;
+  --rh-sidebar-width:   240px;
   --rh-sidebar-collapsed: 70px;
+  --rh-transition: all 0.3s ease;
 
+  /* Responsive Variables */
+  --rh-sidebar-current-width: var(--rh-sidebar-width);
+
+  /* Design Tokens - Colors & Radius */
   --rh-green:   #12b76a;
   --rh-yellow:  #f79009;
   --rh-red:     #f04438;
@@ -27,8 +32,15 @@
   --rh-muted:   #6b7280;
   --rh-bg:      #f9fafb;
   --rh-white:   #ffffff;
+}
 
-  --rh-transition: all 0.3s ease;
+/* Base Responsive Logic */
+@media (max-width: 1199px) {
+  :root { --rh-sidebar-current-width: var(--rh-sidebar-collapsed); }
+}
+
+@media (max-width: 767px) {
+  :root { --rh-sidebar-current-width: 0px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -146,83 +158,113 @@ body {
 }
 
 /* ── CORE LAYOUT ───────────────────────────────────────────────────────────
-   Sidebar : fixed, full height, starts at viewport top.
-   Header  : sticky, shifted right by sidebar width — no body padding needed.
-   Content : sits beside sidebar (margin-left) and naturally below the sticky
-             header in normal flow — zero extra top offset.                   */
+   Sidebar : fixed, full height.
+   Header  : sticky, pushed right by sidebar width.
+   Content : margin-left matched to sidebar, single scrollbar.           */
 
 html, body {
-  margin:  0 !important;
-  padding: 0 !important;
-  height:  100%;
-  overflow-x: hidden;
+  margin:  0;
+  padding: 0;
+  height:  100vh;
+  background-color: var(--rh-bg);
+  overflow: hidden; /* We handle scrolling inside the wrapper/content-wrapper */
 }
 
-/* Remove every AdminLTE auto-calculated padding/margin on body */
-body.hold-transition,
-body.layout-fixed {
-  padding-top: 0 !important;
-  margin-top:  0 !important;
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--rh-bg);
 }
 
-/* Sidebar — fixed, full height, flush to viewport top */
+/* Sidebar — fixed, full height */
 .main-sidebar {
   position: fixed !important;
   top:      0     !important;
   left:     0     !important;
   height:   100vh !important;
   width:    var(--rh-sidebar-width) !important;
-  z-index:  1035;
+  z-index:  1045;
+  background-color: var(--rh-sidebar-bg) !important;
+  transition: width 0.3s ease, transform 0.3s ease !important;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* Header — sticky within the content column, not full viewport width */
+/* Header — sticky, pushed right */
 .main-header {
-  position: sticky !important;
-  top:      0      !important;
-  margin-left: var(--rh-sidebar-width) !important;
-  width: calc(100% - var(--rh-sidebar-width)) !important;
-  z-index: 1034;
-  height: 64px;
+  position: relative !important;
+  margin-left: var(--rh-sidebar-current-width) !important;
+  width: auto !important;
+  min-height: 64px !important;
+  z-index: 1020;
   background: var(--rh-white);
-  display: flex;
-  align-items: center;
-}
-
-html, body {
-  margin:  0 !important;
-  padding: 0 !important;
-  height:  100% !important;
-  overflow: hidden !important; /* Force browser scrollbar off */
-}
-
-.wrapper {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  border-bottom: 1px solid var(--rh-border);
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 1.5rem !important;
+  transition: margin-left 0.3s ease !important;
 }
 
 .content-wrapper {
-  flex: 1;
-  margin-left: var(--rh-sidebar-width) !important;
-  overflow-y: auto; /* Allow normal scrolling on regular pages */
+  margin-left: var(--rh-sidebar-current-width) !important;
+  min-height: calc(100vh - 64px);
+  padding: 0;
+  transition: margin-left 0.3s ease !important;
+  background-color: var(--rh-bg);
   position: relative;
+  overflow-x: hidden;
 }
 
-/* Collapsed sidebar state */
+/* On specific 'app' pages like Employee, we prevent content-wrapper from scrolling
+   to let internal panels handle it. On regular pages, we let it scroll normally. */
+body.employee-page .content-wrapper {
+  height: calc(100vh - 64px);
+  overflow-y: hidden !important;
+}
+
+/* Sidebar States */
 body.sidebar-collapse .main-sidebar {
   width: var(--rh-sidebar-collapsed) !important;
 }
 body.sidebar-collapse .main-header,
-body.sidebar-collapse .content-wrapper,
-body.sidebar-collapse .main-footer {
+body.sidebar-collapse .content-wrapper {
   margin-left: var(--rh-sidebar-collapsed) !important;
-  width: calc(100% - var(--rh-sidebar-collapsed)) !important;
 }
-body.sidebar-collapse .content-wrapper,
-body.sidebar-collapse .main-footer {
-  width: auto !important;
+
+/* Mobile Overlay Mode (< 768px) */
+@media (max-width: 767px) {
+  .main-sidebar {
+    transform: translateX(-100%);
+    width: 250px !important; /* Mobile width */
+    z-index: 1040;
+  }
+  
+  body.sidebar-open .main-sidebar {
+    transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+  }
+
+  .main-header, .content-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Overlay backdrop when sidebar is open on mobile */
+  body.sidebar-open::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1039;
+    backdrop-filter: blur(2px);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -410,55 +452,118 @@ body.sidebar-collapse .main-footer {
 /* ═══════════════════════════════════════════════════════════════
    8. TABLES
    ═══════════════════════════════════════════════════════════════ */
-.rh-table th {
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--rh-muted);
-  padding: 0.75rem 1rem;
-  background: transparent;
-  border-bottom: 1px solid var(--rh-border);
-}
-
-.rh-table td {
-  font-size: 0.75rem;
-  padding: 0.75rem 1rem;
-  vertical-align: middle;
-  border-bottom: 1px solid var(--rh-border);
-}
-
 .rh-table tr.row-critical { background-color: #fef2f2; }
 .rh-table tr.row-critical td { color: var(--rh-red); font-weight: 700; }
+
+/* ── RESPONSIVE TABLES (Card Style) ─────────────────────────── */
+@media (max-width: 767px) {
+  .rh-table, .rh-table thead, .rh-table tbody, .rh-table th, .rh-table td, .rh-table tr { 
+    display: block !important; 
+  }
+  
+  /* Hide headers, but keep for accessibility */
+  .rh-table thead tr { 
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  .rh-table tr { 
+    border-bottom: 1px solid var(--rh-border);
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 0.5rem;
+  }
+  
+  .rh-table td { 
+    border: none !important;
+    position: relative;
+    padding-left: 40% !important; 
+    text-align: left !important;
+    font-size: 0.85rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+    border-bottom: 1px solid rgba(0,0,0,0.03) !important;
+  }
+  
+  .rh-table td:before { 
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    width: 35%; 
+    padding-right: 10px; 
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 700;
+    color: var(--rh-muted);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════
    9. EMPLOYEE PAGE — SPLIT PANE
    ═══════════════════════════════════════════════════════════════ */
 #employee-layout {
-  display: flex;
-  height: 100%; /* Fill the content-wrapper exactly */
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
   background: var(--rh-white);
 }
 
-/* On employee page, we want the content-wrapper itself to NOT scroll */
-body.employee-page .content-wrapper {
-  overflow: hidden !important;
-}
-
-/* Hide footer on employee page to maximize app space */
-body.employee-page .main-footer {
-  display: none !important;
-}
-
 #resident-panel {
-  width: 320px;
-  min-width: 320px;
-  flex-shrink: 0;
+  width: 320px !important;
+  min-width: 320px !important;
+  flex-shrink: 0 !important;
   border-right: 1px solid var(--rh-border);
   background: var(--rh-white);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
+}
+
+#task-panel {
+  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fcfdfe;
+  height: 100%;
+}
+
+/* Mobile Employee Layout */
+@media (max-width: 767px) {
+  #employee-layout {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+  
+  #resident-panel {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 40vh !important; /* Stacked view for tablet/mobile */
+    border-right: none;
+    border-bottom: 1px solid var(--rh-border);
+  }
+  
+  #task-panel {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  body.employee-page .content-wrapper {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
 }
 
 #resident-panel .panel-header {
@@ -519,14 +624,6 @@ body.employee-page .main-footer {
 }
 
 .resident-room { font-size: 0.75rem; color: var(--rh-muted); }
-
-#task-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: #fcfdfe;
-}
 
 #task-header {
   padding: 1.5rem 2rem 1rem;
@@ -778,9 +875,15 @@ body.dark-mode .main-header {
 body.dark-mode .rh-card,
 body.dark-mode .rh-stat-box,
 body.dark-mode #resident-panel,
-body.dark-mode #summary-bar {
+body.dark-mode #summary-bar,
+body.dark-mode .rh-card-header {
   background: var(--rh-white) !important;
   border-color: var(--rh-border) !important;
+  color: var(--rh-text) !important;
+}
+
+body.dark-mode .border-bottom {
+  border-bottom-color: var(--rh-border) !important;
 }
 
 body.dark-mode #task-panel { background: #0b1121; }
@@ -816,6 +919,75 @@ body.dark-mode .quick-report-btn:hover { background: rgba(59,130,246,0.12); }
 body.dark-mode .quick-report-icon { background: #0f1923; }
 
 body.dark-mode .rh-table tr.row-critical { background: rgba(240,68,56,0.08); }
+
+/* Dark mode tables */
+body.dark-mode .table,
+body.dark-mode .rh-table {
+  --bs-table-bg: transparent !important;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.02) !important;
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.04) !important;
+  --bs-table-color: var(--rh-text) !important;
+  --bs-table-border-color: #1e293b !important;
+  color: var(--rh-text) !important;
+}
+
+body.dark-mode .table > :not(caption) > * > *,
+body.dark-mode .rh-table > :not(caption) > * > * {
+  background-color: transparent !important;
+  color: inherit !important;
+  border-bottom-color: #1e293b !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .table thead th,
+body.dark-mode .rh-table thead th {
+  background-color: #1e293b !important;
+  color: var(--rh-text) !important;
+  border-bottom-color: #334155 !important;
+}
+
+body.dark-mode .table tbody tr:hover td,
+body.dark-mode .rh-table tbody tr:hover td {
+  background-color: rgba(255,255,255,0.02) !important;
+}
+
+@media (max-width: 767px) {
+  body.dark-mode .rh-table tr {
+    background-color: #0f172a !important;
+    border-color: #1e293b !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
+  }
+  body.dark-mode .rh-table td {
+    border-bottom-color: rgba(255,255,255,0.05) !important;
+  }
+  body.dark-mode .rh-table td:before {
+    color: var(--rh-muted) !important;
+  }
+}
+
+/* Admin Specifics Dark Mode */
+body.dark-mode .btn-outline-secondary {
+  color: var(--rh-muted) !important;
+  border-color: var(--rh-border) !important;
+}
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: var(--rh-border) !important;
+  color: var(--rh-text) !important;
+}
+
+body.dark-mode .btn-outline-primary {
+  color: var(--rh-blue) !important;
+  border-color: var(--rh-blue) !important;
+}
+body.dark-mode .btn-outline-primary:hover {
+  background-color: var(--rh-blue) !important;
+  color: #fff !important;
+}
+
+body.dark-mode .rh-logo-upload {
+  background: rgba(255,255,255,0.02);
+}
+
 body.dark-mode .empty-state-icon { background: #243d4a; }
 
 body.dark-mode .btn-task-status {
