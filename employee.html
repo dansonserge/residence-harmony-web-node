@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résidence Harmonie — Employee Task View</title>
+  <meta name="description" content="Employee daily task execution view — manage resident care tasks for Résidence Harmonie.">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc2/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <nav class="main-header navbar navbar-expand navbar-white">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="#" id="btn-sidebar-toggle" class="nav-link" role="button" title="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <button id="btn-dark-toggle" class="btn btn-link nav-link px-2" type="button" title="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </li>
+      <li class="nav-item dropdown" id="notification-dropdown">
+        <a class="nav-link dropdown-toggle position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" style="font-size:0.5rem">5</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width:360px;max-height:480px;overflow-y:auto">
+          <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+            <h6 class="mb-0 fw-700">Notifications</h6>
+          </div>
+          <div id="notification-list"></div>
+          <div class="border-top text-center py-2">
+            <a href="#" class="fs-12 text-muted">View all notifications</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="notif-avatar-initials" id="header-user-initials" style="background:#dbeafe;color:#1e40af;width:36px;height:36px;font-size:13px">AU</span>
+          <span class="d-none d-md-inline fs-13 fw-500" id="header-user-name">Admin</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+          <li class="px-3 py-2 d-flex align-items-center gap-2 border-bottom">
+            <span class="notif-avatar-initials" style="background:#dbeafe;color:#1e40af;width:40px;height:40px">AU</span>
+            <div>
+              <p class="mb-0 fs-13 fw-600">Admin User</p>
+              <p class="mb-0 fs-11 text-muted">admin@residence-harmonie.fr</p>
+            </div>
+          </li>
+          <li><a class="dropdown-item fs-13" href="#"><i class="fas fa-user me-2 text-muted"></i>My Profile</a></li>
+          <li><a class="dropdown-item fs-13" href="admin.html"><i class="fas fa-cog me-2 text-muted"></i>Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item fs-13" href="index.html"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="main-sidebar elevation-0">
+    <a href="manager.html" class="brand-link">
+      <span class="brand-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </span>
+      <span class="brand-text">Résidence<br>Harmonie</span>
+    </a>
+    <div class="sidebar">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+          <li class="nav-item"><a href="#" class="nav-link active" data-page="employee"><i class="nav-icon fas fa-users"></i><span class="nav-link-label">My Residents</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="employee"><i class="nav-icon fas fa-tasks"></i><span class="nav-link-label">Today's Tasks</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-eye"></i><span class="nav-link-label">Observations</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-history"></i><span class="nav-link-label">History</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-user"></i><span class="nav-link-label">Profile</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ CONTENT WRAPPER ═══════════════════ -->
+  <div class="content-wrapper p-0" style="background:var(--rh-bg)">
+
+    <!-- Employee split-pane layout -->
+    <div id="employee-layout">
+
+      <!-- ── Left panel: resident list ───────────────── -->
+      <div id="resident-panel">
+        <div class="panel-header" style="color:var(--rh-text)">
+          Residents <span class="text-rh-muted fw-400" id="resident-count"></span>
+        </div>
+        <div id="resident-list">
+          <!-- populated by employee.js -->
+        </div>
+      </div>
+
+      <!-- ── Right panel: task detail ────────────────── -->
+      <div id="task-panel">
+
+        <!-- No resident selected placeholder -->
+        <div id="no-resident-msg" class="d-flex align-items-center justify-content-center flex-1 text-rh-muted fs-13" style="height:100%">
+          Select a resident to view their tasks
+        </div>
+
+        <!-- Resident header (hidden until resident selected) -->
+        <div id="task-header" class="d-none">
+          <div class="d-flex align-items-start justify-content-between gap-3 mb-2">
+            <h2 class="fs-14 fw-700 mb-0" id="resident-title" style="color:var(--rh-text)"></h2>
+            <button class="btn btn-sm btn-primary rounded-3 fs-11 flex-shrink-0" type="button">+ Add Task</button>
+          </div>
+          <div id="resident-alerts" class="d-flex flex-wrap gap-1"></div>
+        </div>
+
+        <!-- Period heading + tabs -->
+        <div id="period-tabs-wrapper" class="d-none px-4 pt-3">
+          <h3 class="fs-13 fw-600 mb-2" id="period-heading" style="color:var(--rh-text)"></h3>
+          <nav id="period-tabs-nav" class="nav">
+            <!-- 6 tabs built by employee.js -->
+          </nav>
+        </div>
+
+        <!-- Task list area -->
+        <div id="task-list-wrapper">
+          <!-- populated by employee.js -->
+        </div>
+
+        <!-- Summary bar -->
+        <div id="summary-bar" class="d-none">
+          <div class="summary-pill">
+            <span class="summary-dot" style="background:var(--rh-green)"></span>
+            <span class="text-rh-green" id="summary-done">0</span>
+            <span class="text-rh-muted">Done</span>
+          </div>
+          <div class="summary-pill">
+            <span class="summary-dot" style="background:var(--rh-yellow)"></span>
+            <span class="text-rh-yellow" id="summary-pending">0</span>
+            <span class="text-rh-muted">Pending</span>
+          </div>
+          <div class="summary-pill">
+            <span class="summary-dot" style="background:var(--rh-red)"></span>
+            <span class="text-rh-red" id="summary-refused">0</span>
+            <span class="text-rh-muted">Refused</span>
+          </div>
+        </div>
+
+      </div><!-- /task-panel -->
+    </div><!-- /employee-layout -->
+
+  </div><!-- /content-wrapper -->
+
+</div><!-- /wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc2/dist/js/adminlte.min.js"></script>
+<script src="assets/js/api.service.js"></script>
+<script src="assets/js/sidebar.js"></script>
+<script src="assets/js/notifications.js"></script>
+<script src="assets/js/employee.js"></script>
+
+<!-- Wire resident count + show task panel sections after JS init -->
+<script>
+$(function () {
+    // Show task header, tabs, summary bar once a resident loads
+    var _orig = window._rhShowTaskSections = function () {
+        $('#task-header, #period-tabs-wrapper, #summary-bar').removeClass('d-none');
+        $('#no-resident-msg').addClass('d-none');
+    };
+});
+</script>
+</body>
+</html>

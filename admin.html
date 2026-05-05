@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résidence Harmonie — System Configuration</title>
+  <meta name="description" content="Admin settings page — manage system configuration for Résidence Harmonie.">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc2/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <!-- ═══════════════════ HEADER ═══════════════════ -->
+  <nav class="main-header navbar navbar-expand navbar-white">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="#" id="btn-sidebar-toggle" class="nav-link" role="button" title="Toggle sidebar">
+          <i class="fas fa-bars"></i>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <button id="btn-dark-toggle" class="btn btn-link nav-link px-2" type="button" title="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </li>
+      <li class="nav-item dropdown" id="notification-dropdown">
+        <a class="nav-link dropdown-toggle position-relative" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-bell"></i>
+          <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning" style="font-size:0.5rem">5</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end shadow border-0 p-0" style="width:360px;max-height:480px;overflow-y:auto">
+          <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+            <h6 class="mb-0 fw-700">Notifications</h6>
+          </div>
+          <div id="notification-list"></div>
+          <div class="border-top text-center py-2">
+            <a href="#" class="fs-12 text-muted">View all notifications</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="notif-avatar-initials" id="header-user-initials" style="background:#dbeafe;color:#1e40af;width:36px;height:36px;font-size:13px">AU</span>
+          <span class="d-none d-md-inline fs-13 fw-500" id="header-user-name">Admin</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+          <li class="px-3 py-2 d-flex align-items-center gap-2 border-bottom">
+            <span class="notif-avatar-initials" style="background:#dbeafe;color:#1e40af;width:40px;height:40px">AU</span>
+            <div>
+              <p class="mb-0 fs-13 fw-600">Admin User</p>
+              <p class="mb-0 fs-11 text-muted">admin@residence-harmonie.fr</p>
+            </div>
+          </li>
+          <li><a class="dropdown-item fs-13" href="#"><i class="fas fa-user me-2 text-muted"></i>My Profile</a></li>
+          <li><a class="dropdown-item fs-13" href="admin.html"><i class="fas fa-cog me-2 text-muted"></i>Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item fs-13" href="index.html"><i class="fas fa-sign-out-alt me-2 text-muted"></i>Sign out</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="main-sidebar elevation-0">
+    <a href="manager.html" class="brand-link">
+      <span class="brand-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+          <path d="M9 21V12h6v9"/>
+        </svg>
+      </span>
+      <span class="brand-text">Résidence<br>Harmonie</span>
+    </a>
+    <div class="sidebar">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+          <li class="nav-item"><a href="#" class="nav-link" data-page="admin"><i class="nav-icon fas fa-th-large"></i><span class="nav-link-label">Dashboard</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-users"></i><span class="nav-link-label">Residents</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-user-tie"></i><span class="nav-link-label">Employees</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-door-open"></i><span class="nav-link-label">Rooms</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-clock"></i><span class="nav-link-label">Periods of Day</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-calendar-alt"></i><span class="nav-link-label">Work Shifts</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-list-ol"></i><span class="nav-link-label">Priorities</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-redo"></i><span class="nav-link-label">Frequencies</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-clipboard-list"></i><span class="nav-link-label">Task Catalog</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-exclamation-triangle"></i><span class="nav-link-label">Risks</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-utensils"></i><span class="nav-link-label">Food Textures</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-allergies"></i><span class="nav-link-label">Allergies</span></a></li>
+          <!-- Settings is active on this page -->
+          <li class="nav-item"><a href="admin.html" class="nav-link active" data-page="admin"><i class="nav-icon fas fa-cog"></i><span class="nav-link-label">Settings</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-file-code"></i><span class="nav-link-label">System Logs</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ CONTENT WRAPPER ═══════════════════ -->
+  <div class="content-wrapper" style="background:var(--rh-bg)">
+    <div class="content-header px-4 pt-4 pb-0">
+      <h1 class="fs-5 fw-800" style="color:var(--rh-text)">System Configuration</h1>
+      <p class="fs-12 text-rh-muted mb-0">Manage all system parameters and reference data</p>
+    </div>
+
+    <section class="content px-4 pt-4 pb-5">
+
+      <!-- Loading overlay -->
+      <div id="page-loader" class="loading-overlay">
+        <div class="rh-spinner"></div>
+        <span>Loading configuration…</span>
+      </div>
+
+      <!-- Error message -->
+      <div id="page-error" class="alert alert-danger d-none" role="alert"></div>
+
+      <!-- Main content (hidden until data loads) -->
+      <div id="page-main" class="d-none">
+
+        <!-- ── Top row: General Settings + Reference Data + Task Catalog ── -->
+        <div class="row g-4 mb-4">
+
+          <!-- General Settings -->
+          <div class="col-12 col-xl-3">
+            <div class="rh-card h-100">
+              <div class="rh-card-header">⚙️ General Settings</div>
+              <div class="rh-card-body">
+
+                <div class="mb-3">
+                  <label class="rh-form-label" for="input-residence-name">Residence Name</label>
+                  <input type="text" id="input-residence-name" class="rh-form-control" placeholder="Résidence Harmonie">
+                </div>
+
+                <div class="mb-3">
+                  <label class="rh-form-label" for="input-address">Address</label>
+                  <input type="text" id="input-address" class="rh-form-control" placeholder="123 Rue de la Paix">
+                </div>
+
+                <div class="mb-3">
+                  <label class="rh-form-label" for="select-language">Language</label>
+                  <select id="select-language" class="rh-form-control" style="cursor:pointer">
+                    <option value="Français">Français</option>
+                    <option value="English">English</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label class="rh-form-label">Logo</label>
+                  <input type="file" id="logo-file-input" accept="image/*" class="d-none">
+                  <div class="rh-logo-upload" id="logo-upload-btn" role="button" tabindex="0">
+                    <i class="fas fa-cloud-upload-alt fs-5"></i>
+                    <span id="logo-upload-label">Upload Logo</span>
+                  </div>
+                </div>
+
+                <button id="btn-save-settings" class="btn btn-primary w-100 rounded-3 fs-13 fw-600" type="button">
+                  Save Settings
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Reference Data -->
+          <div class="col-12 col-xl-3">
+            <div class="rh-card h-100">
+              <div class="rh-card-header">📋 Reference Data</div>
+              <div id="ref-data-list">
+                <!-- populated by admin.js -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Task Catalog -->
+          <div class="col-12 col-xl-6">
+            <div class="rh-card h-100">
+              <div class="rh-card-header d-flex justify-content-between align-items-center">
+                <span>📋 Task Catalog</span>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-primary rounded-3 fs-11" type="button">+ Add Task</button>
+                  <button class="btn btn-sm btn-outline-secondary rounded-3 fs-11" type="button">🗂 Manage</button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table rh-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Task Name</th>
+                      <th>Category</th>
+                      <th>Duration</th>
+                      <th>Priority</th>
+                    </tr>
+                  </thead>
+                  <tbody id="catalog-body">
+                    <tr><td colspan="4" class="text-center text-muted py-4 fs-12">Loading…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /top row -->
+
+        <!-- ── User Management ── -->
+        <div class="rh-card">
+          <div class="rh-card-header d-flex justify-content-between align-items-center">
+            <span>👥 User Management</span>
+            <button class="btn btn-sm btn-primary rounded-3 fs-11" type="button">+ Add User</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table rh-table mb-0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-body">
+                <tr><td colspan="4" class="text-center text-muted py-4 fs-12">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /page-main -->
+
+    </section>
+  </div><!-- /content-wrapper -->
+
+  <footer class="main-footer text-center fs-11 text-muted py-3">
+    <strong>Résidence Harmonie</strong> &copy; 2026
+  </footer>
+
+</div><!-- /wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc2/dist/js/adminlte.min.js"></script>
+<script src="assets/js/api.service.js"></script>
+<script src="assets/js/sidebar.js"></script>
+<script src="assets/js/notifications.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
