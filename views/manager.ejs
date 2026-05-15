@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <%- include('partials/header') %>
+  <%- include('partials/sidebar') %>
+
+  <!-- ═══════════════════ CONTENT WRAPPER ═══════════════════ -->
+  <div class="content-wrapper" style="background:var(--rh-bg)">
+    
+    <!-- Dashboard Stats (KPIs) -->
+    <div class="content-header px-4 pt-4 pb-0">
+      <div class="row g-3">
+        <!-- Residents KPI -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl">
+          <div class="rh-card p-3 d-flex align-items-center gap-3">
+            <div class="kpi-icon bg-light-blue"><i class="fas fa-users"></i></div>
+            <div>
+              <div class="fs-24 fw-800" id="kpi-residents"><%= (data.kpis && data.kpis.activeResidents) || 0 %></div>
+              <div class="fs-11 text-muted fw-600">Active Residents</div>
+            </div>
+          </div>
+        </div>
+        <!-- Completed KPI -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl">
+          <div class="rh-card p-3 d-flex align-items-center gap-3">
+            <div class="kpi-icon bg-light-green"><i class="fas fa-check-circle"></i></div>
+            <div>
+              <div class="fs-24 fw-800" id="kpi-completed"><%= (data.kpis && data.kpis.tasksCompleted) || 0 %></div>
+              <div class="fs-11 text-rh-green fw-700">↑ <%= (data.kpis && data.kpis.completionRate) || 0 %>% completion rate</div>
+            </div>
+          </div>
+        </div>
+        <!-- Pending KPI -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl">
+          <div class="rh-card p-3 d-flex align-items-center gap-3">
+            <div class="kpi-icon bg-light-orange"><i class="fas fa-clock"></i></div>
+            <div>
+              <div class="fs-24 fw-800" id="kpi-pending"><%= (data.kpis && data.kpis.pendingTasks) || 0 %></div>
+              <div class="fs-11 text-rh-yellow fw-700">⚠ Needs Attention</div>
+            </div>
+          </div>
+        </div>
+        <!-- Refused KPI -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl">
+          <div class="rh-card p-3 d-flex align-items-center gap-3">
+            <div class="kpi-icon bg-light-red"><i class="fas fa-times-circle"></i></div>
+            <div>
+              <div class="fs-24 fw-800" id="kpi-refused"><%= (data.kpis && data.kpis.refusedTasks) || 0 %></div>
+              <div class="fs-11 text-rh-red fw-700">● Follow Up Required</div>
+            </div>
+          </div>
+        </div>
+        <!-- Observations KPI -->
+        <div class="col-12 col-md-6 col-lg-4 col-xl">
+          <div class="rh-card p-3 d-flex align-items-center gap-3">
+            <div class="kpi-icon bg-light-purple"><i class="fas fa-notes-medical"></i></div>
+            <div>
+              <div class="fs-24 fw-800" id="kpi-observations"><%= (data.kpis && data.kpis.observationsToday) || 0 %></div>
+              <div class="fs-11 text-muted fw-600">Today's Notes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Charts Section -->
+    <section class="content px-4 py-4">
+      <div class="row g-4">
+        <!-- Tasks by Period Chart -->
+        <div class="col-12 col-xl-4">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">Tasks by Period</div>
+            <div class="rh-card-body p-0">
+              <div id="chart-tasks-period" style="min-height: 250px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Completion Rate Donut -->
+        <div class="col-12 col-xl-4">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">Completion Rate by Employee</div>
+            <div class="rh-card-body d-flex flex-column align-items-center justify-content-center">
+              <div id="chart-completion" style="width: 100%; min-height: 220px;"></div>
+              <div id="donut-legend" class="mt-2 w-100 px-4"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Tasks by Resident Chart -->
+        <div class="col-12 col-xl-4">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">Tasks by Resident (Top 5)</div>
+            <div class="rh-card-body p-0">
+              <div id="chart-residents" style="min-height: 250px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tables Section -->
+      <div class="row g-4 mt-1">
+        <!-- Pending Tasks Table -->
+        <div class="col-12 col-xl-4">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">
+              <i class="fas fa-exclamation-triangle text-rh-yellow me-2"></i>Pending Tasks (Needs Attention)
+            </div>
+            <div class="rh-card-body p-0">
+              <div class="table-responsive">
+                <table class="table rh-table mb-0">
+                  <thead>
+                    <tr>
+                      <th class="fs-12 fw-800">Resident</th>
+                      <th class="fs-12 fw-800">Task</th>
+                      <th class="fs-12 fw-800">Period</th>
+                      <th class="fs-12 fw-800">Due</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (data.tables && data.tables.pendingTasks && data.tables.pendingTasks.length > 0) { %>
+                      <% data.tables.pendingTasks.forEach(row => { %>
+                        <tr>
+                          <td class="fs-12 fw-bold"><%= row.resident %></td>
+                          <td class="fs-12 text-muted"><%= row.task %></td>
+                          <td class="fs-12 text-muted"><%= row.period %></td>
+                          <td class="fs-12 fw-bold text-rh-red text-nowrap">🕐 <%= row.dueTime %></td>
+                        </tr>
+                      <% }); %>
+                    <% } else { %>
+                      <tr><td colspan="4" class="text-center text-muted py-4 fs-12">No pending tasks</td></tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Observations Table -->
+        <div class="col-12 col-xl-5">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">
+              <i class="fas fa-file-medical-alt text-rh-purple me-2"></i>Recent Observations
+            </div>
+            <div class="rh-card-body p-0">
+              <div class="table-responsive">
+                <table class="table rh-table mb-0">
+                  <thead>
+                    <tr>
+                      <th class="fs-12 fw-800">Resident</th>
+                      <th class="fs-12 fw-800">Note</th>
+                      <th class="fs-12 fw-800">Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (data.tables && data.tables.recentObservations && data.tables.recentObservations.length > 0) { %>
+                      <% data.tables.recentObservations.forEach(row => { %>
+                        <tr class="<%= (row.status === 'critical' || row.type === 'refusal') ? 'row-critical' : '' %>">
+                          <td class="fs-12 fw-bold"><%= row.resident %></td>
+                          <td class="fs-12"><%= row.text %></td>
+                          <td class="fs-12"><%= row.time %></td>
+                        </tr>
+                      <% }); %>
+                    <% } else { %>
+                      <tr><td colspan="3" class="text-center text-muted py-4 fs-12">No observations</td></tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Reports -->
+        <div class="col-12 col-xl-3">
+          <div class="rh-card h-100">
+            <div class="rh-card-header text-rh-blue">
+              <i class="fas fa-check-double me-2"></i>Quick Reports
+            </div>
+            <div class="rh-card-body">
+              <div id="quick-reports-list">
+                <% if (data.quickReports && data.quickReports.length > 0) { %>
+                  <% data.quickReports.forEach(r => { %>
+                    <button class="quick-report-btn mb-2 w-100 text-start" type="button">
+                      <span class="quick-report-icon"><i class="fas fa-file-alt"></i></span>
+                      <span>
+                        <span class="quick-report-title"><%= r.name %></span>
+                        <span class="quick-report-sub"><%= r.subtitle %></span>
+                      </span>
+                    </button>
+                  <% }); %>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <%- include('partials/footer') %>
+</div>
+
+<%- include('partials/scripts') %>
+<!-- Pass chart data to JS -->
+<script>
+  window.CHART_DATA = <%- JSON.stringify(data.charts || {}) %>;
+  window.KPI_DATA = <%- JSON.stringify(data.kpis || {}) %>;
+</script>
+<script src="assets/js/manager.js"></script>
+</body>
+</html>

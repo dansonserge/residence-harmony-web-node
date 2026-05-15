@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary employee-page">
+<div class="wrapper">
+
+  <%- include('partials/header') %>
+  <%- include('partials/sidebar') %>
+
+  <!-- ═══════════════════ CONTENT WRAPPER ═══════════════════ -->
+  <div class="content-wrapper p-0" style="background:var(--rh-bg)">
+
+    <div id="employee-layout">
+
+      <!-- ── Left panel: resident list ───────────────── -->
+      <div id="resident-panel" style="width: 320px; border-right: 1px solid rgba(0,0,0,0.05); background: #fff;">
+        <div class="panel-header px-4 py-3" style="color:var(--rh-text); border-bottom: 1px solid rgba(0,0,0,0.03);">
+          <span class="fs-15 fw-800">Residents</span> <span class="text-rh-muted fw-400 ms-1">(<%= residents.length %>)</span>
+        </div>
+        <div id="resident-list" class="mt-2">
+          <% residents.forEach((r, i) => { 
+            const initials = r.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            const isActive = selectedResident && String(r.id) === String(selectedResident.id);
+            const colors = [
+              { bg: '#dbeafe', text: '#1e40af' },
+              { bg: '#dcfce7', text: '#15803d' },
+              { bg: '#fef3c7', text: '#92400e' },
+              { bg: '#f3e8ff', text: '#7e22ce' },
+              { bg: '#fee2e2', text: '#991b1b' }
+            ][i % 5];
+          %>
+            <a href="/employee?residentId=<%= r.id %>&period=<%= locals.currentPeriod || 'Morning' %>" class="resident-item px-4 py-3 d-flex align-items-center gap-3 <%= isActive ? 'active' : '' %>" style="text-decoration:none; transition: all 0.2s ease;">
+              <div class="position-relative">
+                <% if (r.photoUrl) { %>
+                  <img class="resident-avatar" src="<%= r.photoUrl %>" alt="<%= r.name %>" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid <%= isActive ? 'var(--rh-sidebar-active)' : 'transparent' %>">
+                <% } else { %>
+                  <div class="resident-initials" style="background:<%= colors.bg %>;color:<%= colors.text %>;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px"><%= initials %></div>
+                <% } %>
+              </div>
+              <div class="flex-1 text-start overflow-hidden">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="resident-name fw-800 fs-14 text-truncate" style="color: <%= isActive ? 'var(--rh-sidebar-active)' : 'var(--rh-text)' %>"><%= r.name %></span>
+                  <span class="resident-room fs-10 text-muted">Room <%= r.roomNumber %></span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 mt-1">
+                  <span class="badge-rh bg-light-blue fw-700" style="font-size: 9px; padding: 2px 8px;"><%= r.doneTasksCount %>/<%= r.totalTasksCount %> Done</span>
+                  <% if (r.alerts && r.alerts.risk === 'Fall') { %>
+                    <span class="badge-rh bg-light-red fw-700" style="font-size: 9px; padding: 2px 8px;">Fall Risk</span>
+                  <% } %>
+                </div>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- ── Right panel: task detail ────────────────── -->
+      <div id="task-panel" class="flex-1 d-flex flex-column" style="background: #fdfdfe;">
+        <% if (selectedResident) { %>
+          <!-- Resident header -->
+          <div id="task-header" class="px-5 pt-5 pb-3">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <h2 class="fs-28 fw-900 mb-0 d-flex align-items-center" style="color:var(--rh-text); letter-spacing: -0.5px;">
+                <i class="fas fa-user-circle me-3 text-muted opacity-50"></i><%= selectedResident.name %> <span class="mx-3 text-muted fw-300">|</span> <span class="text-muted fw-700 fs-24">Room <%= selectedResident.roomNumber %></span>
+              </h2>
+              <button class="btn btn-primary rounded-pill px-4 py-2 fs-12 fw-800 shadow-sm" type="button">+ Add Task</button>
+            </div>
+            <div id="resident-alerts" class="d-flex flex-wrap gap-2">
+              <% if (selectedResident.alerts) { %>
+                <span class="badge-rh bg-light-blue px-3 py-2 fw-700 fs-11">🍽 Texture: <%= selectedResident.alerts.texture %></span>
+                <% (selectedResident.alerts.allergies || []).forEach(a => { %>
+                  <span class="badge-rh bg-light-orange px-3 py-2 fw-700 fs-11">⚠ Allergies: <%= a %></span>
+                <% }); %>
+                <span class="badge-rh bg-light-blue px-3 py-2 fw-700 fs-11">♿ Mobility: <%= selectedResident.alerts.mobility %></span>
+                <% if (selectedResident.alerts.risk === 'Fall' || selectedResident.alerts.risk === 'High') { %>
+                  <span class="badge-rh bg-light-orange px-3 py-2 fw-700 fs-11">⚡ Risk: Fall</span>
+                <% } %>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Period Tabs -->
+          <div id="period-tabs-wrapper" class="mt-2 px-5">
+            <h3 class="fs-14 fw-800 mb-3" style="color:var(--rh-text)">Accompagnements Du <%= locals.currentPeriod || 'Morning' %></h3>
+            <nav class="nav nav-tabs border-0 gap-4">
+              <% ['Morning', 'Mid-Morning', 'Lunch', 'Afternoon', 'Dinner', 'Evening'].forEach((p) => { 
+                const isActive = p.toLowerCase() === (locals.currentPeriod || 'Morning').toLowerCase();
+              %>
+                <a class="nav-link border-0 fw-800 fs-13 p-0 pb-2 <%= isActive ? 'active' : 'text-muted' %>" 
+                   href="/employee?residentId=<%= selectedResident.id %>&period=<%= p %>"
+                   style="<%= isActive ? 'color: var(--rh-sidebar-active); border-bottom: 2px solid var(--rh-sidebar-active) !important;' : 'opacity: 0.6;' %>">
+                  <%= p %>
+                </a>
+              <% }); %>
+            </nav>
+          </div>
+
+          <!-- Task list -->
+          <div id="task-list-wrapper" class="flex-1 overflow-auto px-5 py-4">
+            <% if (tasks && tasks.length > 0) { %>
+              <% tasks.forEach(task => { %>
+                <div class="task-card mb-4 p-4 rh-card border-0 shadow-sm" data-task-id="<%= task.id %>" style="background: #fff; border-radius: 16px;">
+                  <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                    <div>
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        <span style="font-size: 18px;"><%= task.priority === 'Haute' ? '🟡' : '📋' %></span>
+                        <span class="fs-16 fw-800" style="color:var(--rh-text)"><%= task.name %></span>
+                        <span class="fw-600 text-muted ms-1 fs-14">/ <%= (task.description || '').split(' ')[0] %></span>
+                      </div>
+                      <div class="d-flex align-items-center gap-3 fs-12 text-muted fw-600 mt-2">
+                        <span><i class="far fa-clock me-2 opacity-50"></i>Durée: <%= task.duration %></span>
+                        <span class="<%= task.priority === 'Haute' ? 'text-rh-red' : 'text-rh-yellow' %> d-flex align-items-center gap-2">
+                          <i class="fas fa-circle" style="font-size:6px"></i> <%= task.priority %> priorité
+                        </span>
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                      <span class="badge <%= task.status === 'Done' ? 'badge-done' : (task.status === 'Refused' ? 'badge-refused' : 'badge-pending') %> px-3 py-2 rounded-pill fs-11 fw-800">
+                        <% if (task.status === 'Done') { %> ✓ Done <% } else if (task.status === 'In Progress') { %> ↻ In Progress <% } else if (task.status === 'Refused') { %> ✗ Refused <% } else { %> Pending <% } %>
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div class="observation-box mb-3">
+                    <textarea class="task-observation w-100 border-0 p-3 fs-13 fw-600" rows="3" placeholder="Observation: (optionnelle)..." style="background: #f8f9fa; border-radius: 12px; resize: none;"><%= task.observation || '' %></textarea>
+                  </div>
+
+                  <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-task-action <%= task.status === 'Done' ? 'active-done' : '' %>" data-status="Done">✓ Done</button>
+                    <button class="btn btn-task-action <%= task.status === 'In Progress' ? 'active-progress' : '' %>" data-status="In Progress">▶ Start</button>
+                    <button class="btn btn-task-action <%= task.status === 'Refused' ? 'active-refused' : '' %>" data-status="Refused">✗ Refused</button>
+                    <button class="btn btn-task-action" data-status="N/A">N/A</button>
+                  </div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="empty-state text-center py-5 mt-5" style="opacity: 0.8;">
+                <div class="empty-state-icon mx-auto mb-4" style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-clipboard-list fs-32 text-muted opacity-50"></i>
+                </div>
+                <h4 class="fs-18 fw-800 mb-2" style="color:var(--rh-text)">No tasks for <%= locals.currentPeriod || 'Morning' %></h4>
+                <p class="fs-13 text-muted fw-600">This period has no scheduled tasks for this resident.</p>
+              </div>
+            <% } %>
+          </div>
+
+          <!-- Summary bar -->
+          <div id="summary-bar" class="d-flex align-items-center border-top px-5 py-3 gap-5" style="background:#fff; border-top: 1px solid rgba(0,0,0,0.05) !important;">
+             <div class="d-flex align-items-center gap-2">
+               <span class="rounded-circle" style="width:10px;height:10px;background:var(--rh-green)"></span>
+               <span class="fs-13 fw-800 text-rh-green"><%= tasks.filter(t => t.status === 'Done').length %> Done</span>
+             </div>
+             <div class="d-flex align-items-center gap-2">
+               <span class="rounded-circle" style="width:10px;height:10px;background:var(--rh-yellow)"></span>
+               <span class="fs-13 fw-800 text-rh-yellow"><%= tasks.filter(t => t.status !== 'Done' && t.status !== 'Refused').length %> Pending</span>
+             </div>
+             <div class="d-flex align-items-center gap-2">
+               <span class="rounded-circle" style="width:10px;height:10px;background:var(--rh-red)"></span>
+               <span class="fs-13 fw-800 text-rh-red"><%= tasks.filter(t => t.status === 'Refused').length %> Refused</span>
+             </div>
+          </div>
+        <% } %>
+      </div>
+
+    </div>
+
+  </div>
+  
+  <%- include('partials/footer') %>
+
+</div>
+
+<%- include('partials/scripts') %>
+<script src="assets/js/employee.js"></script>
+</body>
+</html>

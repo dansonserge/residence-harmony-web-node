@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <%- include('partials/header') %>
+  <%- include('partials/sidebar') %>
+
+  <!-- ═══════════════════ CONTENT WRAPPER ═══════════════════ -->
+  <div class="content-wrapper" style="background:var(--rh-bg)">
+    
+    <div class="content-header px-4 pt-4 pb-0">
+      <h1 class="fs-22 fw-800 mb-1" style="color:var(--rh-text)">System Configuration</h1>
+      <p class="text-muted fs-13 mb-0">Manage all system parameters and reference data</p>
+    </div>
+
+    <section class="content px-4 py-4">
+      <div class="row g-4">
+        
+        <!-- 1. General Settings -->
+        <div class="col-12 col-xl-3">
+          <div class="rh-card h-100">
+            <div class="rh-card-header d-flex align-items-center">
+              <i class="fas fa-cog text-muted me-2"></i>General Settings
+            </div>
+            <div class="rh-card-body">
+              <div class="mb-3">
+                <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Residence Name</label>
+                <input type="text" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.residenceName) || '' %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Address</label>
+                <input type="text" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.address) || '' %>">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Language</label>
+                <select class="form-select fs-13 fw-600">
+                  <option <%= (data.generalSettings && data.generalSettings.language === 'Français') ? 'selected' : '' %>>Français</option>
+                  <option <%= (data.generalSettings && data.generalSettings.language === 'English') ? 'selected' : '' %>>English</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Logo</label>
+                <div class="border rounded-3 p-4 text-center border-dashed bg-light" style="border-style: dashed !important;">
+                   <i class="fas fa-cloud-upload-alt fs-24 text-muted mb-2"></i>
+                   <p class="fs-11 text-muted mb-0">Upload Logo</p>
+                </div>
+              </div>
+              <button class="btn btn-primary w-100 rounded-pill fs-12 fw-700 py-2">Save Settings</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Reference Data -->
+        <div class="col-12 col-xl-3">
+          <div class="rh-card h-100">
+            <div class="rh-card-header">
+              <i class="fas fa-database text-muted me-2"></i>Reference Data
+            </div>
+            <div class="rh-card-body p-0">
+              <!-- Periods -->
+              <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                <div>
+                  <div class="fs-13 fw-700">Periods of Day</div>
+                  <div class="fs-11 text-muted"><span class="badge bg-primary rounded-circle me-1" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:9px"><%= data.periodsCount || 0 %></span> configured</div>
+                </div>
+                <button class="btn btn-light btn-sm fs-11 fw-700 border">Manage</button>
+              </div>
+              <!-- Shifts -->
+              <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                <div>
+                  <div class="fs-13 fw-700">Work Shifts</div>
+                  <div class="fs-11 text-muted"><span class="badge bg-purple rounded-circle me-1" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:9px"><%= data.shiftsCount || 0 %></span> configured</div>
+                </div>
+                <button class="btn btn-light btn-sm fs-11 fw-700 border">Manage</button>
+              </div>
+              <!-- Priorities -->
+              <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                <div>
+                  <div class="fs-13 fw-700">Priorities</div>
+                  <div class="fs-11 text-muted"><span class="badge bg-warning rounded-circle me-1" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:9px"><%= data.prioritiesCount || 0 %></span> configured</div>
+                </div>
+                <button class="btn btn-light btn-sm fs-11 fw-700 border">Manage</button>
+              </div>
+              <!-- Frequencies -->
+              <div class="d-flex align-items-center justify-content-between p-3">
+                <div>
+                  <div class="fs-13 fw-700">Frequencies</div>
+                  <div class="fs-11 text-muted"><span class="badge bg-success rounded-circle me-1" style="width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;font-size:9px"><%= data.frequenciesCount || 0 %></span> configured</div>
+                </div>
+                <button class="btn btn-light btn-sm fs-11 fw-700 border">Manage</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Task Catalog -->
+        <div class="col-12 col-xl-6">
+          <div class="rh-card h-100">
+            <div class="rh-card-header d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-book-medical text-muted me-2"></i>Task Catalog</span>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary btn-sm fs-10 fw-800 px-3">+ Add Task</button>
+                <button class="btn btn-light btn-sm fs-10 fw-800 px-3 border"><i class="fas fa-folder me-1"></i>Manage</button>
+              </div>
+            </div>
+            <div class="rh-card-body p-0">
+              <table class="table rh-table mb-0">
+                <thead>
+                  <tr>
+                    <th class="fs-13 fw-800">Task Name</th>
+                    <th class="fs-13 fw-800 text-center">Category</th>
+                    <th class="fs-13 fw-800 text-center">Duration</th>
+                    <th class="fs-13 fw-800 text-end">Priority</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (data.catalogItems && data.catalogItems.length > 0) { %>
+                    <% data.catalogItems.forEach(item => { %>
+                      <tr>
+                        <td class="fs-13 fw-bold"><%= item.name %></td>
+                        <td class="fs-13 text-muted text-center"><%= item.category %></td>
+                        <td class="fs-13 text-muted text-center"><%= item.duration %></td>
+                        <td class="text-end">
+                          <span class="badge bg-danger rounded-pill fs-10 px-3"><i class="fas fa-circle me-1" style="font-size:6px"></i> <%= item.priority %></span>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 4. User Management -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="rh-card">
+            <div class="rh-card-header d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-users-cog text-muted me-2"></i>User Management</span>
+              <button class="btn btn-primary btn-sm fs-10 fw-800 px-3">+ Add User</button>
+            </div>
+            <div class="rh-card-body p-0">
+              <table class="table rh-table mb-0">
+                <thead>
+                  <tr>
+                    <th class="fs-13 fw-800">Name</th>
+                    <th class="fs-13 fw-800 text-center">Role</th>
+                    <th class="fs-13 fw-800 text-center">Status</th>
+                    <th class="fs-13 fw-800 text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (data.users && data.users.length > 0) { %>
+                    <% data.users.forEach((u, i) => { 
+                      const initials = u.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    %>
+                      <tr>
+                        <td class="fs-13 fw-bold">
+                          <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light-blue text-rh-blue rounded-circle p-2 fs-10" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center"><%= initials %></span>
+                            <%= u.name %>
+                          </div>
+                        </td>
+                        <td class="text-center">
+                          <span class="badge bg-light-gray text-muted fs-11 px-3 py-1 rounded-pill"><%= u.role %></span>
+                        </td>
+                        <td class="text-center">
+                          <span class="badge bg-success rounded-pill fs-10 px-3 py-1"><i class="fas fa-circle me-1" style="font-size:6px"></i> <%= u.status %></span>
+                        </td>
+                        <td class="text-end">
+                          <button class="btn btn-outline-primary btn-sm fs-10 fw-800 px-3 border-0"><i class="fas fa-edit me-1"></i>Edit</button>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <%- include('partials/footer') %>
+</div>
+
+<%- include('partials/scripts') %>
+</body>
+</html>
