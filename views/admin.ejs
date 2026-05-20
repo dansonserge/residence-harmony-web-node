@@ -29,27 +29,28 @@
             <div class="rh-card-body">
               <div class="mb-3">
                 <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Residence Name</label>
-                <input type="text" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.residenceName) || '' %>">
+                <input type="text" id="input-residence-name" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.residenceName) || '' %>">
               </div>
               <div class="mb-3">
                 <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Address</label>
-                <input type="text" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.address) || '' %>">
+                <input type="text" id="input-address" class="form-control fs-13 fw-600" value="<%= (data.generalSettings && data.generalSettings.address) || '' %>">
               </div>
               <div class="mb-3">
                 <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Language</label>
-                <select class="form-select fs-13 fw-600">
+                <select id="select-language" class="form-select fs-13 fw-600">
                   <option <%= (data.generalSettings && data.generalSettings.language === 'Français') ? 'selected' : '' %>>Français</option>
                   <option <%= (data.generalSettings && data.generalSettings.language === 'English') ? 'selected' : '' %>>English</option>
                 </select>
               </div>
               <div class="mb-4">
                 <label class="form-label fs-10 fw-800 text-muted text-uppercase mb-1">Logo</label>
-                <div class="border rounded-3 p-4 text-center border-dashed bg-light" style="border-style: dashed !important;">
+                <input type="file" id="logo-file-input" class="d-none" accept="image/*">
+                <div id="logo-upload-btn" class="border rounded-3 p-4 text-center border-dashed bg-light" style="border-style: dashed !important; cursor: pointer;">
                    <i class="fas fa-cloud-upload-alt fs-24 text-muted mb-2"></i>
-                   <p class="fs-11 text-muted mb-0">Upload Logo</p>
+                   <p id="logo-upload-label" class="fs-11 text-muted mb-0">Upload Logo</p>
                 </div>
               </div>
-              <button class="btn btn-primary w-100 rounded-pill fs-12 fw-700 py-2">Save Settings</button>
+              <button id="btn-save-settings" class="btn btn-primary w-100 rounded-pill fs-12 fw-700 py-2">Save Settings</button>
             </div>
           </div>
         </div>
@@ -194,5 +195,6 @@
 </div>
 
 <%- include('partials/scripts') %>
+<script src="assets/js/admin.js"></script>
 </body>
 </html>

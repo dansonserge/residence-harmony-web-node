@@ -31,7 +31,7 @@
               { bg: '#fee2e2', text: '#991b1b' }
             ][i % 5];
           %>
-            <a href="/employee?residentId=<%= r.id %>&period=<%= locals.currentPeriod || 'Morning' %>" class="resident-item px-4 py-3 d-flex align-items-center gap-3 <%= isActive ? 'active' : '' %>" style="text-decoration:none; transition: all 0.2s ease;">
+            <a href="/employee?residentId=<%= r.id %>&period=<%= locals.currentPeriod || 'Morning' %>" class="resident-item px-4 py-3 d-flex align-items-center gap-3 <%= isActive ? 'active' : '' %>" hx-get="/employee?residentId=<%= r.id %>&period=<%= locals.currentPeriod || 'Morning' %>" hx-target="#employee-layout" hx-select="#employee-layout" hx-swap="outerHTML" hx-push-url="true" style="text-decoration:none; transition: all 0.2s ease;">
               <div class="position-relative">
                 <% if (r.photoUrl) { %>
                   <img class="resident-avatar" src="<%= r.photoUrl %>" alt="<%= r.name %>" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid <%= isActive ? 'var(--rh-sidebar-active)' : 'transparent' %>">
@@ -90,6 +90,11 @@
               %>
                 <a class="nav-link border-0 fw-800 fs-13 p-0 pb-2 <%= isActive ? 'active' : 'text-muted' %>" 
                    href="/employee?residentId=<%= selectedResident.id %>&period=<%= p %>"
+                   hx-get="/employee?residentId=<%= selectedResident.id %>&period=<%= p %>"
+                   hx-target="#employee-layout"
+                   hx-select="#employee-layout"
+                   hx-swap="outerHTML"
+                   hx-push-url="true"
                    style="<%= isActive ? 'color: var(--rh-sidebar-active); border-bottom: 2px solid var(--rh-sidebar-active) !important;' : 'opacity: 0.6;' %>">
                   <%= p %>
                 </a>
